@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react';
+import Logo from '../../Logo/Logo';
 
 
 export default function Login() {
@@ -11,11 +12,8 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md space-y-8 p-10 bg-white rounded-xl shadow-lg">
         <div className="flex justify-center">
-          <img
-            className="h-16 w-16"
-            src="https://i.hizliresim.com/eah1uqa.jpg"
-            alt="logo"
-          />
+          <Logo></Logo>
+          
         </div>
         <h2 className="mt-6 text-center text-3xl font-semibold text-gray-900">
           Sign in to your account
