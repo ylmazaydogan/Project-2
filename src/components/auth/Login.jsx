@@ -1,7 +1,12 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react';
 
 
 export default function Login() {
+
+    
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md space-y-8 p-10 bg-white rounded-xl shadow-lg">
@@ -64,7 +69,7 @@ export default function Login() {
             <div className="text-sm">
               <a
                 href="#"
-                className="font-medium text-green-600 hover:text-green-500"
+                className="font-medium text-green hover:text-green-500"
               >
                 Forgot your password?
               </a>
@@ -74,7 +79,7 @@ export default function Login() {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green hover:bg-green focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Sign In
             </button>
@@ -84,7 +89,7 @@ export default function Login() {
           Don't have an account?{" "}
           <a
             href="#"
-            className="font-medium text-green-600 hover:text-green-500"
+            className="font-medium text-green hover:text-green-500"
           >
             Sign up
           </a>

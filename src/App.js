@@ -1,14 +1,18 @@
-  
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
 import './App.css';
-import './components/auth/Login.jsx';
-import Login from './components/auth/Login.jsx';
-import Register from './components/auth/Register.jsx';
-import './Logo/Logo.jsx';
+import Dashboard from './components/dashboard/Dashboard';
+
 
 function App() {
   return (
-    <Register></Register>
-    
+    <Routes>
+      <Route path='/' element={<Login/>}></Route>
+      <Route path='/dashboard' element={<Dashboard/>}></Route>
+      <Route path = '/register' element={<Register/>}></Route>   
+    </Routes>
   );
 }
 
