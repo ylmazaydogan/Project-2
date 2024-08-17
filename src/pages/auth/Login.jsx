@@ -6,6 +6,26 @@ import Logo from '../../Logo/Logo';
 
 export default function Login() {
 
+  const handleLogin=(event)=>{
+
+    event.preventDefault();//Yenilemeyi engeller.
+
+    fetch('https://dummyjson.com/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        
+        username: 'emilys',
+        password: 'emilyspass',
+        expiresInMins: 30, // optional, defaults to 60
+      })
+    })
+    .then(res => res.json())
+    .then(console.log);
+  }
+
+  
+
     
 
   return (
@@ -18,7 +38,7 @@ export default function Login() {
         <h2 className="mt-6 text-center text-3xl font-semibold text-gray-900">
           Sign in to your account
         </h2>
-        <form className="mt-8 space-y-6">
+        <form onSubmit={handleLogin} className="mt-8 space-y-6">
           <div className="rounded-md shadow-sm">
             <div>
               <label htmlFor="email-address" className="sr-only">
