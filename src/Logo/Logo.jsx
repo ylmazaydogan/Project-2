@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './tool-icon.jpg'; // Resmi import edin
+import logo from './tool-icon.jpg'; // Resmi import ettim
 
 export default function Logo() {
   return (
@@ -7,7 +7,7 @@ export default function Logo() {
       <div className="flex justify-center">
         <img
           className="h-16 w-16"
-          src={logo} // Import edilen değişkeni burada kullanın
+          src={logo} // Import edilen degiskeni burada kullandim.
           alt="logo"
         />
       </div>

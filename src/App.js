@@ -9,7 +9,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 function App() {
   return (
     <Routes>
-      <Route path='/' element={<Login/>}></Route>
+      <Route path='/login' element={<Login/>}></Route>
       <Route path='/dashboard' element={<Dashboard/>}></Route>
       <Route path = '/register' element={<Register/>}></Route>   
     </Routes>

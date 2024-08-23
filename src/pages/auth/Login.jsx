@@ -4,7 +4,13 @@ import { useState } from 'react';
 import Logo from '../../Logo/Logo';
 
 
+
 export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginStatus, setLoginStatus] = useState(true);
+
+  const navigate = useNavigate();
 
   const handleLogin=(event)=>{
 
@@ -17,16 +23,27 @@ export default function Login() {
         
         username: 'emilys',
         password: 'emilyspass',
-        expiresInMins: 30, // optional, defaults to 60
+        expiresInMins: 30, //Bekleme süresi 30 dakika olarak ayarladım.
       })
     })
-    .then(res => res.json())
-    .then(console.log);
-  }
-
-  
-
-    
+    .then((res) => res.json())
+      .then((data) => {
+        if (data.token) {
+          // Eğer giriş başarılıysa yönlendirme yap
+          console.log("Login Success");
+          setLoginStatus(true);
+          navigate('/dashboard'); // dashboard sayfasına yönlendir
+        } else {
+          // Giriş başarısızsa kullanıcıya hata göster
+          console.log("Login Failed");
+          setLoginStatus(false);
+        }
+      })
+      .catch((error) => {
+        console.log("Login Error", error);
+        setLoginStatus(false);
+      });
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -52,6 +69,8 @@ export default function Login() {
                 required
                 className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                 placeholder="Email address"
+                value={email}
+                onChange={e=>setEmail(e.target.value)}
               />
             </div>
             <div className="mt-6">
@@ -64,6 +83,8 @@ export default function Login() {
                 type="password"
                 className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
               />
             </div>
           </div>
