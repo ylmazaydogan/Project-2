@@ -1,61 +1,61 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../../Logo/Logo';
-import { useForm } from 'react-hook-form';
-//import PasswordValidationForm from '../password/PasswordValidationForm';
-
-
-
+import InputComponent from '../../InputComponent/InputComponent';
 
 export default function Register() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [registerStatus, setRegisterStatus] = useState(null);
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordError , setPasswordError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordLengthError, setPasswordLengthError] = useState('');
 
   const navigate = useNavigate();
 
-  const handleChange=(e)=>{
-    const {name,value}= e.target;
-    if (name === "password"){
-      setPassword(value);
-    }
-    else if (name === "confirmPassword"){
-      setConfirmPassword(value);
-    }
-  };
+  const handleRegister = (e) => {
+    e.preventDefault(); // Formun yenilenmesini engeller.
 
-  const handleRegister = (event) => {
-    event.preventDefault(); // Yenilenmesini engelliyor.
+ 
+    const { firstName, lastName, email, password, confirmPassword } = e.target.elements;
 
-    if (password !==confirmPassword){
+    const firstNameValue = firstName.value;
+    const lastNameValue = lastName.value;
+    const emailValue = email.value;
+    const passwordValue = password.value;
+    const confirmPasswordValue = confirmPassword.value;
+
+    // Şifre uzunluğunu kontrol ettim.
+    if (passwordValue.length < 8) {
+      setPasswordLengthError("Şifre en az 8 karakter uzunluğunda olmalıdır.");
+      return;
+    } else {
+      setPasswordLengthError('');
+    }
+
+    //Şifreler eşleşip eşleşmediğini burada kontrol ettim.
+    if (passwordValue !== confirmPasswordValue) {
       setPasswordError("Şifreniz Eşleşmiyor");
       return;
+    } else {
+      setPasswordError('');
     }
 
-    //Kayıt için kullanılacak schema
+    //Kullanıcı verileri burada yer aldı.
     const userData = {
-      firstName,
-      lastName,
-      email,
-      password,
+      firstName: firstNameValue,
+      lastName: lastNameValue,
+      email: emailValue,
+      password: passwordValue,
     };
-
 
     console.log('User Data:', userData);
 
+    //Kayıt başarılı olduğunda bu sayfaya yönlendir.
     navigate('/login');
 
-    //Inputlari temizlemek istersem boyle yapabilirim.
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setPassword('');
+    // Formu sıfırladım.
+    e.target.reset();
   };
 
+  
   return (
     <div className="flex justify-center items-center h-screen bg-white">
       <div className="bg-white p-8 rounded-lg shadow-md w-96 text-center">
@@ -63,69 +63,51 @@ export default function Register() {
         <h2 className="text-2xl font-bold mb-5 text-gray-800">Sign up to your account</h2>
         <form onSubmit={handleRegister}>
           <div className="flex justify-between mb-5">
-            <input
+            <InputComponent
               type="text"
-              id="first-name"
-              name="first-name"
+              name="firstName"
               placeholder="First Name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
               className="w-1/2 p-2 border border-gray-300 rounded-md mr-2"
-
             />
-            <input
+            <InputComponent
               type="text"
-              id="last-name"
-              name="last-name"
+              name="lastName"
               placeholder="Last Name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
               className="w-1/2 p-2 border border-gray-300 rounded-md"
             />
           </div>
           <div className="mb-5">
-            <input
+            <InputComponent
               type="email"
-              id="email"
               name="email"
               placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded-md"
             />
           </div>
           <div className="mb-5">
-            <input
+            <InputComponent
               type="password"
               name="password"
               placeholder="Password"
-              value={password}
-              onChange={handleChange}
-    
               className="w-full p-2 border border-gray-300 rounded-md"
             />
           </div>
           <div className='mb-5'>
-            <input
+            <InputComponent
               type='password'
               name="confirmPassword"
               placeholder='Confirm Password'
-              value={confirmPassword}
-              onChange={handleChange}
-              
               className="w-full p-2 border border-gray-300 rounded-md"
             />
             {passwordError && (
               <p className='text-red-500 text-sm mt-2'>{passwordError}</p>
             )}
-
-
           </div>
           <button type="submit" className="bg-green text-white py-3 w-full rounded-md mb-4 hover:bg-green-700">
             Sign up
           </button>
           {registerStatus === 'success' && (
-            <p className="text-green-500 text-sm">Kayıt başarılı,yönlendiriliyorsunuz.</p>
+            <p className="text-green-500 text-sm">Kayıt başarılı, yönlendiriliyorsunuz.</p>
           )}
           {registerStatus === 'fail' && (
             <p className="text-red-500 text-sm">Kayıt sırasında hata, lütfen tekrar deneyin.</p>

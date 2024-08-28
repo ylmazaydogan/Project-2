@@ -1,40 +1,35 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Logo from '../../Logo/Logo';
-
-
+import InputComponent from '../../InputComponent/InputComponent';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [loginStatus, setLoginStatus] = useState(true);
-
   const navigate = useNavigate();
 
-  const handleLogin=(event)=>{
+  const handleLogin = (event) => {
+    event.preventDefault(); // Formun yenilenmesini engeller.
 
-    event.preventDefault();//Yenilemeyi engeller.
+    // Form elemanlarına erişim sağla
+    const emailValue = event.target.elements.email.value;
+    const passwordValue = event.target.elements.password.value;
 
     fetch('https://dummyjson.com/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        
-        username: 'emilys',
+        username: 'emilys',  // Kullanıcı adı olarak email kullanıyoruz.
         password: 'emilyspass',
-        expiresInMins: 30, //Bekleme süresi 30 dakika olarak ayarladım.
-      })
+        expiresInMins: 30, // Oturum süresi 30 dakika olarak ayarlanıyor.
+      }),
     })
-    .then((res) => res.json())
+      .then((res) => res.json())
       .then((data) => {
         if (data.token) {
-          // Eğer giriş başarılıysa yönlendirme yap
           console.log("Login Success");
           setLoginStatus(true);
-          navigate('/dashboard'); // dashboard sayfasına yönlendir
+          navigate('/dashboard'); // Başarılı girişte dashboard sayfasına yönlendir
         } else {
-          // Giriş başarısızsa kullanıcıya hata göster
           console.log("Login Failed");
           setLoginStatus(false);
         }
@@ -49,8 +44,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md space-y-8 p-10 bg-white rounded-xl shadow-lg">
         <div className="flex justify-center">
-          <Logo></Logo>
-          
+          <Logo />
         </div>
         <h2 className="mt-6 text-center text-3xl font-semibold text-gray-900">
           Sign in to your account
@@ -58,33 +52,29 @@ export default function Login() {
         <form onSubmit={handleLogin} className="mt-8 space-y-6">
           <div className="rounded-md shadow-sm">
             <div>
-              <label htmlFor="email-address" className="sr-only">
+              <label htmlFor="email" className="sr-only">
                 Email address
               </label>
-              <input
-                id="email-address"
+              <InputComponent
+                id="email"
                 name="email"
                 type="email"
                 autoComplete="email"
                 required
                 className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                 placeholder="Email address"
-                value={email}
-                onChange={e=>setEmail(e.target.value)}
               />
             </div>
             <div className="mt-6">
               <label htmlFor="password" className="sr-only">
                 Password
               </label>
-              <input
+              <InputComponent
                 id="password"
                 name="password"
                 type="password"
                 className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
               />
             </div>
           </div>
@@ -135,5 +125,5 @@ export default function Login() {
         </div>
       </div>
     </div>
-  )
+  );
 }
