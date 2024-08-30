@@ -1,34 +1,50 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../../Logo/Logo';
-import InputComponent from '../../InputComponent/InputComponent';
+import InputComponent from '../../Components/Input/InputComponent';
 
 export default function Login() {
   const [loginStatus, setLoginStatus] = useState(true);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token'); //localstorageden tokenı aldım reis.
+
+    if (token) {
+      /* providing token in bearer */
+      fetch('https://dummyjson.com/auth/me', {
+        method: 'GET',
+        headers: {
+          'Authorization':"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJtaWNoYWVsdyIsImVtYWlsIjoibWljaGFlbC53aWxsaWFtc0B4LmR1bW15anNvbi5jb20iLCJmaXJzdE5hbWUiOiJNaWNoYWVsIiwibGFzdE5hbWUiOiJXaWxsaWFtcyIsImdlbmRlciI6Im1hbGUiLCJpbWFnZSI6Imh0dHBzOi8vZHVtbXlqc29uLmNvbS9pY29uL21pY2hhZWx3LzEyOCIsImlhdCI6MTcxNzYxMTc0MCwiZXhwIjoxNzE3NjE1MzQwfQ.eQnhQSnS4o0sXZWARh2HsWrEr6XfDT4ngh0ejiykfH8",
+        },
+      })
+        .then(res => res.json())
+        .then(console.log);
+    }
+  })
 
   const handleLogin = (event) => {
     event.preventDefault(); // Formun yenilenmesini engeller.
 
-    // Form elemanlarına erişim sağla
-    const emailValue = event.target.elements.email.value;
-    const passwordValue = event.target.elements.password.value;
+    const { username, password } = event.target.elements;
 
     fetch('https://dummyjson.com/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        username: 'emilys',  // Kullanıcı adı olarak email kullanıyoruz.
-        password: 'emilyspass',
-        expiresInMins: 30, // Oturum süresi 30 dakika olarak ayarlanıyor.
+        username: username.value,
+        password: password.value,
+        expiresInMins: 30,
       }),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.token) {
-          console.log("Login Success");
+          console.log("Login Success", data);
           setLoginStatus(true);
-          navigate('/dashboard'); // Başarılı girişte dashboard sayfasına yönlendir
+          navigate('/dashboard');
         } else {
           console.log("Login Failed");
           setLoginStatus(false);
@@ -52,17 +68,15 @@ export default function Login() {
         <form onSubmit={handleLogin} className="mt-8 space-y-6">
           <div className="rounded-md shadow-sm">
             <div>
-              <label htmlFor="email" className="sr-only">
-                Email address
+              <label htmlFor="username" className="sr-only">
+                Username
               </label>
               <InputComponent
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Enter your username"
                 required
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
               />
             </div>
             <div className="mt-6">
@@ -75,6 +89,7 @@ export default function Login() {
                 type="password"
                 className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
+                required
               />
             </div>
           </div>
