@@ -2,31 +2,36 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../../Logo/Logo';
 import InputComponent from '../../Components/Input/InputComponent';
+import { get } from 'react-hook-form';
 
 export default function Login() {
   const [loginStatus, setLoginStatus] = useState(true);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  //const [username, setUsername] = useState('');
+  //const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem('token'); //localstorageden tokenı aldım reis.
+  const getToken=()=>{
+    return localStorage.getItem('token');
+  };
 
+  useEffect(() => {
+    const token = getToken(); 
+  
     if (token) {
-      /* providing token in bearer */
       fetch('https://dummyjson.com/auth/me', {
         method: 'GET',
         headers: {
-          'Authorization':"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJtaWNoYWVsdyIsImVtYWlsIjoibWljaGFlbC53aWxsaWFtc0B4LmR1bW15anNvbi5jb20iLCJmaXJzdE5hbWUiOiJNaWNoYWVsIiwibGFzdE5hbWUiOiJXaWxsaWFtcyIsImdlbmRlciI6Im1hbGUiLCJpbWFnZSI6Imh0dHBzOi8vZHVtbXlqc29uLmNvbS9pY29uL21pY2hhZWx3LzEyOCIsImlhdCI6MTcxNzYxMTc0MCwiZXhwIjoxNzE3NjE1MzQwfQ.eQnhQSnS4o0sXZWARh2HsWrEr6XfDT4ngh0ejiykfH8",
+          'Authorization': 'Bearer ' + token, 
         },
       })
         .then(res => res.json())
-        .then(console.log);
+        .then(console.log) 
+        .catch((error) => console.error('Error fetching user data:', error)); 
     }
-  })
-
+  }, []);
+  
   const handleLogin = (event) => {
-    event.preventDefault(); // Formun yenilenmesini engeller.
+    event.preventDefault(); 
 
     const { username, password } = event.target.elements;
 
@@ -44,6 +49,9 @@ export default function Login() {
         if (data.token) {
           console.log("Login Success", data);
           setLoginStatus(true);
+
+          localStorage.setItem('token',data.token); 
+
           navigate('/dashboard');
         } else {
           console.log("Login Failed");
