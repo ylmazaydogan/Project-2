@@ -6,8 +6,6 @@ import { get } from 'react-hook-form';
 
 export default function Login() {
   const [loginStatus, setLoginStatus] = useState(true);
-  //const [username, setUsername] = useState('');
-  //const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const getToken=()=>{

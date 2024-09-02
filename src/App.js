@@ -6,15 +6,20 @@ import './App.css';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import SupplyRequest from './Pages/SupplyRequest';
 import MaterialOnTheWay from './Pages/MaterialOnTheWay';
+import ProtectedRoutes from './Utils/ProtectedRoute';
 
 function App() {
   return (
     <Routes>
+      <Route path = '/register' element={<Register/>}></Route>
       <Route path='/login' element={<Login/>}></Route>
-      <Route path='/dashboard' element={<Dashboard/>}></Route>
-      <Route path = '/register' element={<Register/>}></Route>   
-      <Route path='/SupplyRequest' element ={<SupplyRequest></SupplyRequest>}></Route>
-      <Route path='/MaterialOnTheWay' element={<MaterialOnTheWay></MaterialOnTheWay>}></Route>
+      
+        <Route element = {<ProtectedRoutes/>}>
+            <Route path='/dashboard' element={<Dashboard/>}></Route> 
+            <Route path='/SupplyRequest' element ={<SupplyRequest></SupplyRequest>}></Route>
+            <Route path='/MaterialOnTheWay' element={<MaterialOnTheWay></MaterialOnTheWay>}></Route>
+        </Route>
+      
     </Routes>
   );
 
