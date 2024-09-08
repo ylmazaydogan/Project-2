@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../../Logo/Logo';
-import InputComponent from '../../Components/Input/InputComponent';
+import Input from '../../Components/Input/Input';
 
 export default function Register() {
   const [registerStatus, setRegisterStatus] = useState(null);
@@ -75,13 +75,13 @@ export default function Register() {
         <h2 className="text-2xl font-bold mb-5 text-gray-800">Sign up to your account</h2>
         <form onSubmit={handleRegister}>
           <div className="flex justify-between mb-5">
-            <InputComponent
+            <Input
               type="text"
               name="firstName"
               placeholder="First Name"
               className="w-1/2 p-2 border border-gray-300 rounded-md mr-2"
             />
-            <InputComponent
+            <Input
               type="text"
               name="lastName"
               placeholder="Last Name"
@@ -89,7 +89,7 @@ export default function Register() {
             />
           </div>
           <div className="mb-5">
-            <InputComponent
+            <Input
               type="email"
               name="email"
               placeholder="Email"
@@ -97,7 +97,7 @@ export default function Register() {
             />
           </div>
           <div className="mb-5">
-          <InputComponent
+          <Input
               {...{
                 type: 'text',
                 name: 'firstName',
@@ -107,7 +107,7 @@ export default function Register() {
             />
           </div>
           <div className='mb-5'>
-            <InputComponent
+            <Input
               type='password'
               name="confirmPassword"
               placeholder='Confirm Password'

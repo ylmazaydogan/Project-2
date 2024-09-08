@@ -1,11 +1,12 @@
 import React, { FC, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './Pages/Auth/Login';
-import Register from './Pages/Auth/Register';
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
 import './App.css';
-import Dashboard from './Pages/Dashboard/Dashboard';
-import SupplyRequest from './Pages/SupplyRequest';
-import MaterialOnTheWay from './Pages/MaterialOnTheWay';
+import Dashboard from './Components/Sidebar/Sidebar';
+
+import SupplyRequest from './pages/SupplyRequest';
+import MaterialOnTheWay from './pages/MaterialOnTheWay';
 import ProtectedRoutes from './Utils/ProtectedRoute';
 
 function App() {

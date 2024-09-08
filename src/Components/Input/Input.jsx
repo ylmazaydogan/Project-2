@@ -1,6 +1,6 @@
 import React from 'react';
 
-const InputComponent = ({ className, ...props }) => {
+const Input = ({ className, ...props }) => {
   return (
     <input
       className={
@@ -14,4 +14,4 @@ const InputComponent = ({ className, ...props }) => {
   );
 };
 
-export default InputComponent;
+export default Input;
