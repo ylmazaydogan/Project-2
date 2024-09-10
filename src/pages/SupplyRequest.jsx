@@ -6,7 +6,6 @@ export default function SupplyRequest() {
   const [products, setProducts] = useState([]);
   const [siteFilter, setSiteFilter] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [dateFilter, setDateFilter] = useState('');
   const [activeDropdown, setActiveDropdown] = useState(null);
 
   useEffect(() => {
@@ -28,14 +27,6 @@ export default function SupplyRequest() {
     }
   };
 
-  // const handleDateFilter = () => {
-  //   if (dateFilter) {
-      
-  //   } else {
-  //     setFilteredProducts(products); 
-  //   }
-  // };
-
   const toggleDropdown = (id) => {
     if (activeDropdown === id) {
       setActiveDropdown(null);
@@ -44,18 +35,48 @@ export default function SupplyRequest() {
     }
   };
 
+  const updateProductTitle = (id, newTitle) => {
+    fetch(`https://dummyjson.com/products/${id}`, {
+      method: 'PUT', 
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: newTitle
+      })
+    })
+    .then(res => res.json())
+    .then(updatedProduct => {
+      const updatedProducts = products.map(product =>
+        product.id === id ? { ...product, title: updatedProduct.title } : product
+      );
+      setProducts(updatedProducts); // Buradaki hatayı düzelttik
+      setFilteredProducts(updatedProducts);
+      console.log("Ürün güncellendi", updatedProduct); // Burada da 'updateProduct' yerini 'updatedProduct' olarak değiştirdik
+    })
+    .catch((error) => console.error('Güncelleme hatası:', error));
+  };
+
+  const deleteProduct = (id)=>{
+     fetch(`https://dummyjson.com/products/${id}`,
+      { method: 'DELETE' })
+      .then(()=>{
+        const updatedProducts = products.filter(product => product.id !== id);
+        setProducts(updatedProducts);
+        setFilteredProducts(updatedProducts);
+        console.log("Ürün silindi");
+      })
+      
+  };
+
   return (
     <div className='flex min-h-screen bg-gray-100'>
       <Sidebar />
 
       <div className='flex-1 p-5'>
-        {/* Başlık kısmı */}
         <div className='flex justify-between items-center mb-4'>
           <h1 className='text-2xl font-bold'>Supply Request</h1>
           <button className='py-3 px-4 bg-green-500 text-white rounded-lg'>Create New Request</button>
         </div>
 
-       -
         <div className='flex items-center justify-between mb-4'>
           <input
             type='text'
@@ -65,11 +86,10 @@ export default function SupplyRequest() {
           />
           <div className='flex space-x-2'>
             <button className='py-2 px-4 border rounded-lg' onClick={handleSiteFilter}>Site Filter</button>
-            <button className='py-2 px-4 border rounded-lg' onClick={handleDateFilter}>Date Filter</button>
+            <button className='py-2 px-4 border rounded-lg'>Date Filter</button>
           </div>
         </div>
 
-       
         <div className='overflow-x-auto bg-white shadow-md rounded-lg'>
           <table className='min-w-full divide-y divide-gray-200'>
             <thead className='bg-gray-50'>
@@ -100,13 +120,14 @@ export default function SupplyRequest() {
                       Actions
                     </button>
 
-                    
                     {activeDropdown === product.id && (
                       <div className='absolute z-10 mt-2 right-0 w-48 bg-white border border-gray-200 shadow-lg'>
-                        <button className='block w-full text-left px-4 py-2 text-sm hover:bg-gray-100'>
+                        <button className='block w-full text-left px-4 py-2 text-sm hover:bg-gray-100'
+                        onClick={() => updateProductTitle(product.id, "Iphone Galaxy +1")}>
                           Update
                         </button>
-                        <button className='block w-full text-left px-4 py-2 text-sm hover:bg-gray-100'>
+                        <button className='block w-full text-left px-4 py-2 text-sm hover:bg-gray-100'
+                        onClick={()=>deleteProduct(product.id)}>
                           Delete
                         </button>
                       </div>
